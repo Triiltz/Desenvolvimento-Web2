@@ -1,0 +1,429 @@
+/* Configuration Screen Styles */
+:root {
+    --Cinza: #33302F;
+    --Primria: #FE4F02;
+    --Terciria: #6B6867;
+    --background-light: #FFE4D6;
+    --light-gray: #F8F9FA;
+    --border-color: #E5E5E5;
+    --text-light: #6C757D;
+    --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--light-gray);
+    min-height: 100vh;
+}
+
+.config-container {
+    max-width: 640px;
+    margin: 0 auto;
+    background: white;
+    min-height: 100vh;
+    box-shadow: var(--card-shadow);
+}
+
+/* Header */
+.config-header {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    background: white;
+    border-bottom: 1px solid var(--border-color);
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.back-button {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: var(--light-gray);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--Cinza);
+}
+
+.back-button:hover {
+    background: var(--border-color);
+    transform: scale(1.05);
+}
+
+.config-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--Cinza);
+    flex: 1;
+    text-align: center;
+}
+
+.spacer {
+    width: 44px;
+}
+
+/* Content */
+.config-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.config-section {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--Cinza);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Profile Section */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--background-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--Primria);
+    overflow: hidden;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+}
+
+.profile-details h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--Cinza);
+    margin-bottom: 0.25rem;
+}
+
+.profile-details p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.edit-profile-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border-color);
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--Terciria);
+}
+
+.edit-profile-btn:hover {
+    border-color: var(--Primria);
+    color: var(--Primria);
+    transform: scale(1.05);
+}
+
+/* Config Items */
+.config-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.config-item:last-child {
+    border-bottom: none;
+}
+
+.config-item:hover {
+    background: var(--light-gray);
+    margin: 0 -1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    border-bottom: 1px solid transparent;
+}
+
+.item-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.item-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--light-gray);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--Primria);
+    flex-shrink: 0;
+}
+
+.item-details h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--Cinza);
+    margin-bottom: 0.25rem;
+}
+
+.item-details p {
+    font-size: 0.875rem;
+    color: var(--text-light);
+}
+
+.config-arrow {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.config-arrow:hover {
+    background: var(--border-color);
+    color: var(--Primria);
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--border-color);
+    border-radius: 28px;
+    transition: all 0.3s ease;
+}
+
+.toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background: var(--Primria);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(22px);
+}
+
+/* Logout Button */
+.logout-btn {
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    border: 2px solid #FF4444;
+    border-radius: 12px;
+    color: #FF4444;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.logout-btn:hover {
+    background: #FF4444;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
+}
+
+.logout-btn .item-icon {
+    background: transparent;
+    width: auto;
+    height: auto;
+    color: inherit;
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .config-container {
+        box-shadow: none;
+    }
+    
+    .config-header {
+        padding: 1rem;
+    }
+    
+    .config-header h1 {
+        font-size: 1.25rem;
+    }
+    
+    .back-button {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .spacer {
+        width: 40px;
+    }
+    
+    .profile-avatar {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .avatar {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .profile-details h2 {
+        font-size: 1.1rem;
+    }
+    
+    .edit-profile-btn {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .config-content {
+        padding: 0.5rem;
+    }
+    
+    .config-section {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+    
+    .config-header {
+        padding: 0.75rem;
+    }
+    
+    .section-title {
+        font-size: 1rem;
+    }
+    
+    .config-item {
+        padding: 0.75rem 0;
+    }
+    
+    .item-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .item-details h4 {
+        font-size: 0.95rem;
+    }
+    
+    .item-details p {
+        font-size: 0.8rem;
+    }
+    
+    .profile-avatar {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .avatar {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .profile-details h2 {
+        font-size: 1rem;
+    }
+    
+    .profile-details p {
+        font-size: 0.85rem;
+    }
+    
+    .edit-profile-btn {
+        width: 32px;
+        height: 32px;
+    }
+}

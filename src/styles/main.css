@@ -1,0 +1,21 @@
+/* FIZY App - Main CSS File */
+/* Import order is important for CSS cascade */
+
+/* 1. CSS Variables and Design System */
+@import './base/variables.css';
+
+/* 2. CSS Reset and Base Styles */
+@import './base/reset.css';
+
+/* 3. Utility Classes */
+@import './base/utilities.css';
+
+/* 4. Global Styles (legacy compatibility) */
+@import './base/global.css';
+
+/* 5. Page-specific Styles */
+@import './pages/index.css';
+@import './pages/splash.css';
+@import './pages/first-steps.css';
+@import './pages/auth.css';
+@import './pages/config.css';

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIZY - Primeiros Passos</title>
+    <link rel="stylesheet" href="../../styles/base/global.css">
+    <link rel="stylesheet" href="../../styles/pages/first-steps.css">
+</head>
+<body>
+    <div class="first-steps-container">
+        <!-- Header with steps indicator -->
+        <div class="header">
+            <div class="steps-progress">
+                <div class="step-indicator completed"></div>
+                <div class="step-indicator active"></div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="illustration">
+                <div class="compare-illustration">
+                    <div class="price-cards">
+                        <div class="price-card card-1">
+                            <div class="station-name">Posto A</div>
+                            <div class="price">R$ 5,99</div>
+                            <div class="fuel-type">Gasolina</div>
+                        </div>
+                        <div class="price-card card-2">
+                            <div class="station-name">Posto B</div>
+                            <div class="price">R$ 5,79</div>
+                            <div class="fuel-type">Gasolina</div>
+                        </div>
+                        <div class="price-card card-3">
+                            <div class="station-name">Posto C</div>
+                            <div class="price">R$ 5,89</div>
+                            <div class="fuel-type">Gasolina</div>
+                        </div>
+                    </div>
+                    <div class="comparison-arrow">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <path d="M8 20H32M32 20L24 12M32 20L24 28" stroke="#FE4F02" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-content">
+                <h1>Compare preços!</h1>
+                <p>Veja em tempo real os preços dos combustíveis e escolha a melhor opção para abastecer seu veículo.</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="btn-secondary" onclick="previousStep()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M12.5 5L7.5 10L12.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Voltar
+            </button>
+            <button class="btn-primary" onclick="finishOnboarding()">
+                Começar
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function previousStep() {
+            window.location.href = './first-steps-1.html';
+        }
+
+        function finishOnboarding() {
+            window.location.href = '../auth/login.html';
+        }
+    </script>
+</body>
+</html>

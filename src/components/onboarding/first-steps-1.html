@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIZY - Primeiros Passos</title>
+    <link rel="stylesheet" href="../../styles/base/global.css">
+    <link rel="stylesheet" href="../../styles/pages/first-steps.css">
+</head>
+<body>
+    <div class="first-steps-container">
+        <!-- Header with steps indicator -->
+        <div class="header">
+            <div class="steps-progress">
+                <div class="step-indicator active"></div>
+                <div class="step-indicator"></div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="illustration">
+                <div class="welcome-illustration">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="app-icon">
+                                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="60" height="60" rx="16" fill="#FE4F02"/>
+                                    <path d="M30 15L35 25H25L30 15Z" fill="white"/>
+                                    <circle cx="30" cy="35" r="8" fill="white"/>
+                                    <path d="M20 40L40 40" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="mockup-text">
+                                <div class="title-line"></div>
+                                <div class="subtitle-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="floating-elements">
+                        <div class="fuel-icon fuel-icon-1">G</div>
+                        <div class="fuel-icon fuel-icon-2">E</div>
+                        <div class="fuel-icon fuel-icon-3">D</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-content">
+                <h1>Bem-vindo ao FIZY!</h1>
+                <p>Encontre os postos de combustível mais próximos de você com os melhores preços da região.</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="btn-secondary" onclick="skipOnboarding()">Pular</button>
+            <button class="btn-primary" onclick="nextStep()">
+                Próximo
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function nextStep() {
+            window.location.href = './first-steps-2.html';
+        }
+
+        function skipOnboarding() {
+            window.location.href = '../auth/login.html';
+        }
+    </script>
+</body>
+</html>
