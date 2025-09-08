@@ -1,0 +1,482 @@
+/* First Steps Screen Styles */
+:root {
+    --Cinza: #33302F;
+    --Primria: #FE4F02;
+    --Terciria: #6B6867;
+    --background-light: #FFE4D6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #FFF;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.first-steps-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.steps-progress {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.step-indicator {
+    width: 60px;
+    height: 8px;
+    border-radius: 4px;
+    background: #E5E5E5;
+    transition: all 0.3s ease;
+}
+
+.step-indicator.active {
+    background: var(--Primria);
+}
+
+.step-indicator.completed {
+    background: var(--Primria);
+}
+
+/* Content */
+.content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 4rem;
+    min-height: 60vh;
+    padding: 2rem 0;
+}
+
+.illustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+/* Welcome Illustration (Step 1) */
+.welcome-illustration {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+}
+
+.phone-mockup {
+    width: 200px;
+    height: 360px;
+    background: #333;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: phoneFloat 3s ease-in-out infinite;
+}
+
+.phone-screen {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.app-icon {
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+.mockup-text {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.title-line {
+    height: 8px;
+    background: #FE4F02;
+    border-radius: 4px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.subtitle-line {
+    height: 6px;
+    background: #E5E5E5;
+    border-radius: 3px;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.floating-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.fuel-icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: var(--Primria);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.fuel-icon-1 {
+    top: 20%;
+    left: 10%;
+    animation: float1 4s ease-in-out infinite;
+}
+
+.fuel-icon-2 {
+    top: 60%;
+    right: 15%;
+    animation: float2 4s ease-in-out infinite 1s;
+}
+
+.fuel-icon-3 {
+    bottom: 20%;
+    left: 20%;
+    animation: float3 4s ease-in-out infinite 2s;
+}
+
+/* Compare Illustration (Step 2) */
+.compare-illustration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    max-width: 400px;
+}
+
+.price-cards {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.price-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    min-width: 100px;
+    animation: cardSlideIn 0.6s ease-out;
+}
+
+.price-card.card-1 {
+    animation-delay: 0.2s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.price-card.card-2 {
+    animation-delay: 0.4s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+    border: 2px solid var(--Primria);
+    background: var(--background-light);
+}
+
+.price-card.card-3 {
+    animation-delay: 0.6s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.station-name {
+    font-size: 12px;
+    color: var(--Terciria);
+    margin-bottom: 5px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--Cinza);
+    margin-bottom: 5px;
+}
+
+.fuel-type {
+    font-size: 10px;
+    color: var(--Terciria);
+}
+
+.comparison-arrow {
+    animation: arrowPulse 2s ease-in-out infinite;
+}
+
+.main-image {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    animation: fadeInScale 0.8s ease-out;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.text-content {
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.text-content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--Cinza);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.text-content p {
+    font-size: 1.25rem;
+    color: var(--Terciria);
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+/* Navigation */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--Primria);
+    color: white;
+    flex: 1;
+    max-width: 200px;
+}
+
+.btn-primary:hover {
+    background: #e04502;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(254, 79, 2, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--Terciria);
+    border: 2px solid #E5E5E5;
+}
+
+.btn-secondary:hover {
+    border-color: var(--Primria);
+    color: var(--Primria);
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes phoneFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes float1 {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(10px, -15px); }
+    50% { transform: translate(-5px, -25px); }
+    75% { transform: translate(-10px, -10px); }
+}
+
+@keyframes float2 {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-15px, 10px); }
+    50% { transform: translate(5px, 20px); }
+    75% { transform: translate(10px, 5px); }
+}
+
+@keyframes float3 {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(20px, -5px); }
+    50% { transform: translate(-10px, -15px); }
+    75% { transform: translate(-15px, 5px); }
+}
+
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes arrowPulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+    
+    .text-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .text-content p {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .first-steps-container {
+        padding: 1.5rem;
+    }
+    
+    .content {
+        gap: 2rem;
+        padding: 1rem 0;
+    }
+    
+    .text-content h1 {
+        font-size: 2rem;
+    }
+    
+    .text-content p {
+        font-size: 1rem;
+    }
+    
+    .illustration {
+        min-height: 250px;
+    }
+    
+    .main-image {
+        max-height: 300px;
+    }
+    
+    .navigation {
+        flex-direction: column-reverse;
+        gap: 1rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .first-steps-container {
+        padding: 1rem;
+    }
+    
+    .content {
+        gap: 1.5rem;
+    }
+    
+    .text-content h1 {
+        font-size: 1.75rem;
+    }
+    
+    .text-content p {
+        font-size: 0.95rem;
+    }
+    
+    .illustration {
+        min-height: 200px;
+    }
+    
+    .main-image {
+        max-height: 250px;
+    }
+    
+    .step-indicator {
+        width: 40px;
+        height: 6px;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}
