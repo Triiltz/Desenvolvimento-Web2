@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "generated"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/**
+ * {
+ * id: 1,
+ * name: "Posto Petrobras Centro",
+ * address: "Av Prof Luiz A.de Oliveira, 366 - Vila Marina",
+ * lat: -22.0195,
+ * lng: -47.8910,
+ * rating: 4.5,
+ * distance: "150m",
+ * fuels: {
+ * gasoline: { price: 5.99, updated: "há 2h" },
+ * ethanol: { price: 4.29, updated: "há 2h" },
+ * diesel: { price: 5.49, updated: "há 3h" }
+ * },
+ * features: ["Conveniência", "Borracharia", "Lava-jato"]
+ * }
+ */
+model Station {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  lat       Float
+  lng       Float
+  rating    Float
+  distance  String
+  fuels     Json
+  features  Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
