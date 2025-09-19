@@ -94,6 +94,8 @@ class FuelStationApp {
         this.showStationModal(station);
       });
     });
+    // Atualiza painel lateral (somente desktop)
+    this.renderStationList();
   }
 
   createCustomIcon(station) {
@@ -345,6 +347,126 @@ class FuelStationApp {
     } else {
       spinner.classList.remove('active');
     }
+  }
+
+  /* ===================== */
+  /* Lista lateral (desktop) */
+  /* ===================== */
+  renderStationList() {
+    const listEl = document.getElementById('stationList');
+    if (!listEl) return; // Em mobile não existe
+
+    listEl.innerHTML = '';
+
+    // Ordena por distância se disponível
+    const stationsSorted = [...this.stations].sort((a, b) => {
+      const da = parseInt(String(a.distance || '').replace(/\D/g, '')) || 0;
+      const db = parseInt(String(b.distance || '').replace(/\D/g, '')) || 0;
+      return da - db;
+    });
+
+    stationsSorted.forEach((station, idx) => {
+      const li = document.createElement('li');
+      li.className = 'station-card-item';
+      li.dataset.index = String(idx);
+      li.innerHTML = this.buildStationListItemHTML(station);
+
+      // Clique geral seleciona / centraliza
+      li.addEventListener('click', () => {
+        if (station.lat && station.lng) {
+          this.map.setView([station.lat, station.lng], this.map.getZoom(), {
+            animate: true,
+          });
+        }
+        this.showStationModal(station);
+        document
+          .querySelectorAll('.station-card-item')
+          .forEach((el) => el.classList.remove('active'));
+        li.classList.add('active');
+      });
+
+      // Botão interno (detalhes) não propaga
+      const btn = li.querySelector('.open-modal-btn');
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.showStationModal(station);
+        });
+      }
+
+      listEl.appendChild(li);
+    });
+
+    // Botão de refresh (bind uma vez)
+    const refreshBtn = document.getElementById('refreshStations');
+    if (refreshBtn && !refreshBtn.dataset.bound) {
+      refreshBtn.addEventListener('click', () => {
+        this.fetchByCurrentMapBounds();
+      });
+      refreshBtn.dataset.bound = 'true';
+    }
+  }
+
+  buildStationListItemHTML(station) {
+    const rating = station.rating || 0;
+    const starsInline = this.generateStarsInline(rating);
+    const fuelChips = this.generateFuelChips(station.fuels || {});
+    const safeName = station.name || 'Posto';
+    const safeAddress = station.address || '';
+    const distance = station.distance || '';
+    return `
+      <div class="station-item-header">
+        <h3 title="${safeName}">${safeName}</h3>
+        <span class="station-distance-badge">${distance}</span>
+      </div>
+      <div class="station-address-small" title="${safeAddress}">${safeAddress}</div>
+      <div class="station-rating-line">${starsInline} <span>${
+      rating.toFixed ? rating.toFixed(1) : rating
+    }</span></div>
+      <div class="station-fuels-row">${fuelChips}</div>
+      <button type="button" class="open-modal-btn" aria-label="Ver detalhes de ${safeName}">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M10 3L3 17h14L10 3zm0 4.5l3.5 7h-7L10 7.5z" fill="currentColor"/></svg>
+        Detalhes
+      </button>
+    `;
+  }
+
+  generateStarsInline(rating) {
+    const full = Math.floor(rating);
+    const half = rating % 1 !== 0;
+    const total = 5;
+    let html = '<span class="stars-inline">';
+    for (let i = 0; i < full; i++) {
+      html +=
+        '<svg viewBox="0 0 20 20" fill="none"><path d="M10 2l2.09 4.26 4.91.01L13.55 9.97l1.63 4.05L10 11.77 4.82 14.02 6.45 9.97 2 6.27l4.91-.01L10 2z" fill="#FE4F02"/></svg>';
+    }
+    if (half) {
+      html +=
+        '<svg viewBox="0 0 20 20" fill="none"><defs><linearGradient id="half-inline"><stop offset="50%" stop-color="#FE4F02"/><stop offset="50%" stop-color="#CFCFCF"/></linearGradient></defs><path d="M10 2l2.09 4.26 4.91.01L13.55 9.97l1.63 4.05L10 11.77 4.82 14.02 6.45 9.97 2 6.27l4.91-.01L10 2z" fill="url(#half-inline)"/></svg>';
+    }
+    for (let i = 0; i < total - Math.ceil(rating); i++) {
+      html +=
+        '<svg viewBox="0 0 20 20" fill="none"><path d="M10 2l2.09 4.26 4.91.01L13.55 9.97l1.63 4.05L10 11.77 4.82 14.02 6.45 9.97 2 6.27l4.91-.01L10 2z" fill="#CFCFCF"/></svg>';
+    }
+    html += '</span>';
+    return html;
+  }
+
+  generateFuelChips(fuels) {
+    const map = [
+      ['gasoline', 'G'],
+      ['ethanol', 'E'],
+      ['diesel', 'D'],
+    ];
+    return map
+      .map(([key, label]) => {
+        const f = fuels[key];
+        if (!f || f.price == null) return '';
+        const price =
+          typeof f.price === 'number' ? f.price.toFixed(2) : f.price;
+        return `<span class="fuel-chip"><strong>${label}:</strong> R$ ${price}</span>`;
+      })
+      .join('');
   }
 
   handleSearch(query) {
