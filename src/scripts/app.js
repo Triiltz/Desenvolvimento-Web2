@@ -21,7 +21,7 @@ class FuelStationApp {
 
   async loadStationsFromAPI(params = {}) {
     try {
-      const baseUrl = 'http://localhost:3000/api/stations/all';
+      const baseUrl = 'http://localhost:3333/api/stations/all';
       const url = new URL(baseUrl);
       Object.entries(params).forEach(([k, v]) => {
         if (v !== undefined && v !== null && v !== '')
