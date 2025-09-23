@@ -1,0 +1,48 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Station {
+  id        Int              @id @default(autoincrement())
+  name      String
+  address   String
+  lat       Float
+  lng       Float
+  rating    Float            @default(0)
+  features  StationFeature[]
+  fuels     Fuel[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model StationFeature {
+  id        Int     @id @default(autoincrement())
+  name      String
+  station   Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  stationId Int
+}
+
+model Fuel {
+  id        Int      @id @default(autoincrement())
+  type      String // 'GASOLINE' | 'ETHANOL' | 'DIESEL'
+  price     Float
+  updated   DateTime @default(now())
+  station   Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  stationId Int
+
+  @@unique([stationId, type])
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String?
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

@@ -1,0 +1,218 @@
+@import 'tailwindcss';
+
+@layer utilities {
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes slide-down {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out both;
+  }
+  .animate-slide-down {
+    animation: slide-down 0.3s ease-out both;
+  }
+  .gradient-brand-text {
+    @apply bg-gradient-to-r from-[#fe4f02] to-[#ff8a4a] text-transparent bg-clip-text;
+  }
+
+  /* Onboarding / Splash additional animations (portadas do frontend antigo) */
+  @keyframes phoneFloat {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes float1 {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(10px, -15px);
+    }
+    50% {
+      transform: translate(-5px, -25px);
+    }
+    75% {
+      transform: translate(-10px, -10px);
+    }
+  }
+  @keyframes float2 {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-15px, 10px);
+    }
+    50% {
+      transform: translate(5px, 20px);
+    }
+    75% {
+      transform: translate(10px, 5px);
+    }
+  }
+  @keyframes float3 {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(20px, -5px);
+    }
+    50% {
+      transform: translate(-10px, -15px);
+    }
+    75% {
+      transform: translate(-15px, 5px);
+    }
+  }
+  @keyframes cardSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes arrowPulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+
+  .animate-phone-float {
+    animation: phoneFloat 3s ease-in-out infinite;
+  }
+  .animate-float1 {
+    animation: float1 4s ease-in-out infinite;
+  }
+  .animate-float2 {
+    animation: float2 4s ease-in-out infinite 1s;
+  }
+  .animate-float3 {
+    animation: float3 4s ease-in-out infinite 2s;
+  }
+  .animate-card-slide-in {
+    animation: cardSlideIn 0.6s ease-out forwards;
+  }
+  .animate-arrow-pulse {
+    animation: arrowPulse 2s ease-in-out infinite;
+  }
+
+  /* ===== Custom Map Markers (Next.js adaptation) ===== */
+  .fizy-custom-marker {
+    background: #fe4f02;
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    border: 3px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .fizy-custom-marker:hover {
+    transform: rotate(-45deg) scale(1.1);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  .fizy-custom-marker:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+  }
+  /* ===== Station Card Item Styles (legacy port) ===== */
+  .station-card-item {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 16px 18px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: box-shadow 0.25s ease, transform 0.25s ease,
+      border-color 0.25s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+  .station-card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: #fe4f02;
+  }
+  .station-card-item.active {
+    border-color: #fe4f02;
+    box-shadow: 0 0 0 2px rgba(254, 79, 2, 0.2),
+      0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Botão interno de detalhes (porta do legado) */
+  .open-modal-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fe4f02;
+    background: #fff5ef;
+    padding: 8px 14px 8px 12px;
+    border-radius: 12px;
+    border: 1px solid #ffd8c5;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease,
+      transform 0.2s ease;
+  }
+  .open-modal-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  .open-modal-btn:hover {
+    background: #fe4f02;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(254, 79, 2, 0.3);
+  }
+  .open-modal-btn:active {
+    transform: translateY(1px);
+  }
+  .open-modal-btn:focus-visible {
+    outline: 2px solid rgba(254, 79, 2, 0.6);
+    outline-offset: 2px;
+  }
+}
