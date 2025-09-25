@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { hashPassword } from '@/lib/password';
+
+const strongPasswordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/; // mín 8, maiúscula, minúscula, número, símbolo
 
 const SignupSchema = z
   .object({
@@ -10,8 +12,14 @@ const SignupSchema = z
       .string()
       .email('Email inválido')
       .transform((v) => v.toLowerCase()),
-    password: z.string().min(6, 'Senha deve conter ao menos 6 caracteres'),
-    confirmPassword: z.string().min(6),
+    password: z
+      .string()
+      .min(8, 'Senha deve ter no mínimo 8 caracteres')
+      .refine(
+        (v) => strongPasswordRegex.test(v),
+        'Senha fraca: use maiúscula, minúscula, número e símbolo'
+      ),
+    confirmPassword: z.string().min(8),
     acceptTerms: z
       .boolean()
       .refine((v) => v === true, 'Termos devem ser aceitos'),

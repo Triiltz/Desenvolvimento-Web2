@@ -1,6 +1,5 @@
 'use client';
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { TextInput } from '@/components/ui/TextInput';
@@ -21,6 +20,18 @@ export default function SignUpPage() {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<MessageState | null>(null);
+  const passwordChecks = useMemo(() => {
+    return [
+      { label: 'Mínimo 8 caracteres', pass: password.length >= 8 },
+      { label: 'Letra maiúscula', pass: /[A-Z]/.test(password) },
+      { label: 'Letra minúscula', pass: /[a-z]/.test(password) },
+      { label: 'Número', pass: /\d/.test(password) },
+      { label: 'Símbolo', pass: /[^\da-zA-Z]/.test(password) },
+    ];
+  }, [password]);
+
+  const strengthCount = passwordChecks.filter((c) => c.pass).length;
+  const strengthPercent = (strengthCount / passwordChecks.length) * 100;
 
   useEffect(() => {
     let timer: number | undefined;
@@ -44,6 +55,15 @@ export default function SignUpPage() {
     }
     if (!acceptTerms) {
       setMessage({ text: 'É necessário aceitar os termos.', type: 'error' });
+      return;
+    }
+    // Validação de força de senha no cliente para feedback imediato
+    const strongRule = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/;
+    if (!strongRule.test(password)) {
+      setMessage({
+        text: 'Senha fraca. Use mínimo 8 caracteres com maiúscula, minúscula, número e símbolo.',
+        type: 'error',
+      });
       return;
     }
     try {
@@ -159,6 +179,37 @@ export default function SignUpPage() {
                 autoComplete="new-password"
                 required
               />
+              <div className="-mt-3 space-y-2">
+                <div className="h-1.5 w-full overflow-hidden rounded bg-[#eee]">
+                  <div
+                    className={`h-full transition-all ${
+                      strengthPercent < 40
+                        ? 'bg-red-500'
+                        : strengthPercent < 80
+                        ? 'bg-amber-500'
+                        : 'bg-green-600'
+                    }`}
+                    style={{ width: `${strengthPercent}%` }}
+                  />
+                </div>
+                <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-[#6c757d]">
+                  {passwordChecks.map((c) => (
+                    <li
+                      key={c.label}
+                      className={`flex items-center gap-1 ${
+                        c.pass ? 'text-green-600' : ''
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-2 w-2 rounded-full ${
+                          c.pass ? 'bg-green-600' : 'bg-[#d0d0d0]'
+                        }`}
+                      />
+                      {c.label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <PasswordInput
                 label="Confirmar senha"
                 id="confirmPassword"
