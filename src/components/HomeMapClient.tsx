@@ -36,6 +36,7 @@ export function HomeMapClient() {
   const [selected, setSelected] = useState<Station | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [refreshVersion, setRefreshVersion] = useState(0);
+  const [showMobileList, setShowMobileList] = useState(false);
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -102,6 +103,7 @@ export function HomeMapClient() {
   const openModal = (st: Station) => setSelected(st);
   const closeModal = () => setSelected(null);
   const refresh = () => setRefreshVersion((v) => v + 1);
+  const toggleMobileList = () => setShowMobileList((prev) => !prev);
   const distanceLabel = (st: Station) =>
     st.distanceMeters != null ? `${st.distanceMeters}m de você` : '';
 
@@ -121,7 +123,7 @@ export function HomeMapClient() {
 
   return (
     <div className="app-container relative w-screen h-screen overflow-hidden">
-      <header className="app-header absolute top-0 left-0 right-0 z-[1000] flex items-center gap-4 p-5 md:p-6 bg-gradient-to-b from-orange-500/95 via-orange-500/75 to-transparent backdrop-blur">
+      <header className="app-header absolute top-0 left-0 right-0 z-[1000] flex items-center gap-4 p-5 md:p-6">
         <button
           onClick={() => router.push('/config')}
           className="config-button w-12 h-12 md:w-14 md:h-14 rounded-xl bg-black flex items-center justify-center hover:scale-105 active:scale-95 transition text-orange-600 shadow border border-orange-300"
@@ -205,9 +207,17 @@ export function HomeMapClient() {
               {error}
             </div>
           )}
+          {/* Botão para mostrar lista em mobile */}
+          <button
+            onClick={toggleMobileList}
+            className="lg:hidden fixed bottom-6 left-6 w-14 h-14 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg flex items-center justify-center z-[900] transition-transform active:scale-95"
+            aria-label="Mostrar lista de postos"
+          >
+            <ListIcon className="w-6 h-6" />
+          </button>
         </div>
         <aside className="hidden lg:flex flex-col bg-white/90 backdrop-blur border-l border-neutral-200 z-[900] h-full">
-          <div className="flex items-center justify-between px-5 pt-28 pb-4 border-b">
+          <div className="flex items-center justify-between px-5 pt-8 pb-4 border-b">
             <h2 className="text-base font-semibold text-neutral-800">
               Postos próximos
             </h2>
@@ -232,6 +242,90 @@ export function HomeMapClient() {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     openModal(st);
+                  }
+                }}
+                className={`station-card-item ${
+                  selected?.id === st.id ? 'active' : ''
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="font-medium text-sm text-neutral-800 leading-tight">
+                      {st.name}
+                    </h3>
+                    <p className="text-xs text-neutral-500 line-clamp-2 max-w-[230px]">
+                      {st.address}
+                    </p>
+                  </div>
+                  {st.distanceMeters != null && (
+                    <span className="text-[10px] px-2 py-1 rounded bg-orange-100 text-orange-600 font-medium whitespace-nowrap">
+                      {st.distanceMeters}m
+                    </span>
+                  )}
+                </div>
+                <div className="text-[10px] text-neutral-600 font-medium">
+                  {cheapestPreview(st)}
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1 text-yellow-500">
+                    <StarIcon className="w-3 h-3" />
+                    <span className="text-[11px] text-neutral-700 font-medium">
+                      {st.rating.toFixed(1)}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-neutral-400">
+                    {distanceLabel(st)}
+                  </span>
+                </div>
+              </div>
+            ))}
+            {!loading && filteredStations.length === 0 && (
+              <div className="text-xs text-neutral-500 text-center py-10">
+                Nenhum posto encontrado.
+              </div>
+            )}
+          </div>
+        </aside>
+        {/* Lista mobile em tela cheia */}
+        <aside
+          className={`lg:hidden fixed inset-0 bg-white z-[1050] flex flex-col transition-transform duration-300 ${
+            showMobileList ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <div className="flex items-center justify-between px-5 pt-6 pb-4 border-b bg-orange-500 text-white">
+            <h2 className="text-lg font-semibold">Postos próximos</h2>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={refresh}
+                className="w-9 h-9 rounded-lg border border-white/30 flex items-center justify-center hover:bg-white/10 text-white"
+                aria-label="Atualizar lista"
+              >
+                <RefreshIcon className="w-4 h-4" />
+              </button>
+              <button
+                onClick={toggleMobileList}
+                className="w-9 h-9 rounded-lg border border-white/30 flex items-center justify-center hover:bg-white/10 text-white"
+                aria-label="Voltar ao mapa"
+              >
+                <CloseIcon className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+            {filteredStations.map((st) => (
+              <div
+                key={st.id}
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  openModal(st);
+                  setShowMobileList(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openModal(st);
+                    setShowMobileList(false);
                   }
                 }}
                 className={`station-card-item ${
@@ -541,6 +635,21 @@ function RouteIcon(props: React.SVGProps<SVGSVGElement>) {
       {...props}
     >
       <path d="M3 7 17 3 13 17 10 10 3 7Z" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+function ListIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M3 6h14M3 10h14M3 14h14" />
     </svg>
   );
 }
