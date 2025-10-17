@@ -1,33 +1,24 @@
 'use client';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { setupLeafletIcons } from '@/lib/leafletIcons';
-import L from 'leaflet';
+import type { Map as LeafletMap } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import dynamic from 'next/dynamic';
 import type { Station } from '@/types/station';
 import { useRouter } from 'next/navigation';
-
-const MapContainer = dynamic(
-  () => import('react-leaflet').then((m) => m.MapContainer),
-  { ssr: false }
-);
-const TileLayer = dynamic(
-  () => import('react-leaflet').then((m) => m.TileLayer),
-  { ssr: false }
-);
-const Marker = dynamic(() => import('react-leaflet').then((m) => m.Marker), {
-  ssr: false,
-});
-const Popup = dynamic(() => import('react-leaflet').then((m) => m.Popup), {
-  ssr: false,
-});
-const ZoomControl = dynamic(
-  () => import('react-leaflet').then((m) => m.ZoomControl),
-  { ssr: false }
-);
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  ZoomControl,
+  useMap,
+} from 'react-leaflet';
 
 export function HomeMapClient() {
-  setupLeafletIcons();
+  // Ícones base (marcador padrão) só após cliente
+  useEffect(() => {
+    setupLeafletIcons();
+  }, []);
   const router = useRouter();
   const [userPos, setUserPos] = useState<[number, number] | null>(null);
   const [stations, setStations] = useState<Station[]>([]);
@@ -38,6 +29,16 @@ export function HomeMapClient() {
   const [refreshVersion, setRefreshVersion] = useState(0);
   const [showMobileList, setShowMobileList] = useState(false);
   const mounted = useRef(false);
+  const mapRef = useRef<LeafletMap | null>(null);
+
+  // Componente auxiliar para registrar instância do mapa (evita problemas de ref com dynamic import)
+  const MapRefSetter = () => {
+    const map = useMap();
+    useEffect(() => {
+      mapRef.current = map;
+    }, [map]);
+    return null;
+  };
 
   useEffect(() => {
     if (!navigator.geolocation) return;
@@ -107,9 +108,29 @@ export function HomeMapClient() {
   const distanceLabel = (st: Station) =>
     st.distanceMeters != null ? `${st.distanceMeters}m de você` : '';
 
+  // Carregamos Leaflet de forma dinâmica apenas no cliente
+  const leafletModuleRef = useRef<typeof import('leaflet') | null>(null);
+  const [leafletReady, setLeafletReady] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (typeof window === 'undefined') return;
+      const mod = await import('leaflet');
+      if (!cancelled) {
+        leafletModuleRef.current = mod;
+        setLeafletReady(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const createMarkerIcon = useCallback(
-    (rating: number) =>
-      L.divIcon({
+    (rating: number) => {
+      const L = leafletModuleRef.current;
+      if (!L) return undefined; // até carregar usa ícone default
+      return L.divIcon({
         className: 'fizy-custom-marker-wrapper',
         html: `<div class="fizy-custom-marker" style="background-color: ${getStationColor(
           rating
@@ -117,8 +138,9 @@ export function HomeMapClient() {
         iconSize: [30, 30],
         iconAnchor: [15, 30],
         popupAnchor: [0, -28],
-      }),
-    []
+      });
+    },
+    [getStationColor]
   );
 
   return (
@@ -141,9 +163,40 @@ export function HomeMapClient() {
               className="flex-1 outline-none bg-transparent text-sm md:text-base placeholder:text-neutral-400"
             />
             <button
-              onClick={() => userPos && fetchStations()}
+              onClick={() => {
+                if (userPos) {
+                  mapRef.current?.flyTo(
+                    userPos,
+                    mapRef.current?.getZoom() || 14,
+                    {
+                      duration: 0.75,
+                    }
+                  );
+                  fetchStations();
+                } else if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(
+                    (p) => {
+                      const pos: [number, number] = [
+                        p.coords.latitude,
+                        p.coords.longitude,
+                      ];
+                      setUserPos(pos);
+                      mapRef.current?.flyTo(
+                        pos,
+                        mapRef.current?.getZoom() || 14,
+                        {
+                          duration: 0.75,
+                        }
+                      );
+                      fetchStations();
+                    },
+                    () => {},
+                    { enableHighAccuracy: true }
+                  );
+                }
+              }}
               className="location-button p-1.5 rounded-md hover:bg-orange-50 text-orange-600 transition"
-              aria-label="Usar minha localização"
+              aria-label="Ir para minha localização"
             >
               <TargetIcon className="w-5 h-5" />
             </button>
@@ -158,6 +211,7 @@ export function HomeMapClient() {
             zoomControl={false}
             style={{ width: '100%', height: '100%' }}
           >
+            <MapRefSetter />
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <ZoomControl position="bottomright" />
             {filteredStations.map((st) => (
@@ -195,6 +249,11 @@ export function HomeMapClient() {
               <Marker position={userPos}>
                 <Popup>Você está aqui.</Popup>
               </Marker>
+            )}
+            {!leafletReady && (
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white/90 text-xs px-3 py-1 rounded shadow">
+                Carregando mapa...
+              </div>
             )}
           </MapContainer>
           {loading && (
