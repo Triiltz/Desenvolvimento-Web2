@@ -1,3 +1,9 @@
+# Integrantes
+
+- Gabriel Lucchetta Garcia Sanchez - 828513
+- Guilherme César Athayde - 748175
+- Leonardo Triiltz Siqueira - 811904
+
 # FIZY - Aplicativo de Busca de Combustíveis
 
 ## 📱 Sobre o Projeto
