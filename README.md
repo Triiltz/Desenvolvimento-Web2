@@ -1,3 +1,9 @@
+# Integrantes
+
+- Gabriel Lucchetta Garcia Sanchez - 828513
+- Guilherme César Athayde - 748175
+- Leonardo Triiltz Siqueira - 811904
+
 <h1 align="center">FIZY (Next.js Edition)</h1>
 
 Aplicativo web para buscar, comparar e avaliar postos de combustível – migrado da versão estática (HTML/CSS/JS puro) para **Next.js 15 + Prisma + Leaflet**.
